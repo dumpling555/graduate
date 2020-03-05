@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 24/02/2020 17:18:07
+ Date: 05/03/2020 16:52:16
 */
 
 SET NAMES utf8mb4;
@@ -63,6 +63,9 @@ CREATE TABLE `course`  (
 -- Records of course
 -- ----------------------------
 INSERT INTO `course` VALUES (1, '集成电路', '周一三四', 3, '1');
+INSERT INTO `course` VALUES (2, '电磁场', '周一五六', 3, '2');
+INSERT INTO `course` VALUES (3, '移动通信', '周三七八', 2, '3');
+INSERT INTO `course` VALUES (4, '信号与系统', '周五一二', 4, '1');
 
 -- ----------------------------
 -- Table structure for course_student
@@ -77,6 +80,7 @@ CREATE TABLE `course_student`  (
 -- Records of course_student
 -- ----------------------------
 INSERT INTO `course_student` VALUES (1, 1);
+INSERT INTO `course_student` VALUES (2, 1);
 
 -- ----------------------------
 -- Table structure for student
@@ -94,7 +98,7 @@ CREATE TABLE `student`  (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (1, '邱舒', 5, '123', '123');
+INSERT INTO `student` VALUES (1, '邱舒庭', 5, '123', '123');
 INSERT INTO `student` VALUES (2, '小白', 4, NULL, NULL);
 
 -- ----------------------------
@@ -110,8 +114,9 @@ CREATE TABLE `teacher`  (
 -- ----------------------------
 -- Records of teacher
 -- ----------------------------
-INSERT INTO `teacher` VALUES (1, 'alex');
-INSERT INTO `teacher` VALUES (2, 'adam');
+INSERT INTO `teacher` VALUES (1, '唐晓雨');
+INSERT INTO `teacher` VALUES (2, '花涛');
+INSERT INTO `teacher` VALUES (3, '潘子宇');
 
 -- ----------------------------
 -- Table structure for teacher_class
