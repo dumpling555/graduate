@@ -1,0 +1,27 @@
+<body>
+<h1>编辑学生信息</h1>
+
+<form method="post" action="/student_edit/?id={{current_student_info.id }}"  >
+
+
+    <p>学生姓名：<input type="text" name="student_name" value="{{ current_student_info.name }}" /></p>
+    <p>学生班级
+    <select name="classid">
+        {% for row in class_list %}
+            {% if row.id == current_student_info.classid %}
+{#                返回的班级的号码==返回的学生信息中的班级号码，则选中其中的那一条，在框中显示#}
+
+
+            <option selected value="{{ row.id }}">{{ row.class_name }}</option>
+                {% else %}
+                <option  value="{{ row.id }}">{{ row.class_name }}</option>
+
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    </p>
+    <input type="submit" value="提交">
+
+</form>
+</body>

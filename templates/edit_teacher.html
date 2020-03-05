@@ -1,0 +1,20 @@
+<h1 style="color:orangered">修改教师信息</h1>
+
+<form method="POST" action="/edit_teacher/?nid={{ info.id }}">
+
+    <p>教师姓名：<input type="text" name="name" value="{{ info.name }}"/></p>
+    <p>任教班级
+       <select multiple name="class_id"  >
+           {% for item in class_list %}
+               {% if item.id in class_id_list %}
+               <option selected value="{{ item.id}}">{{ item.class_name }}</option>
+                   {% else %}
+                   <option value="{{ item.id}}">{{ item.class_name }}</option>
+
+               {% endif %}
+           {% endfor %}
+       </select>
+    </p>
+    <input type="submit" value="提交">
+
+</form>

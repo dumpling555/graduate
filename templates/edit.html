@@ -1,0 +1,13 @@
+<body>
+{{ result.id }}
+{{ result.class_name }}
+
+<h1>编辑班级</h1>
+
+<form method="post" action="/edit/?id={{ result.id }}">
+
+    <p>班级名称：<input type="text" name="class_name" value="{{ result.class_name }}" /></p>
+    <input type="submit" value="提交">
+
+</form>
+</body>

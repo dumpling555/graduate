@@ -1,0 +1,293 @@
+<h1 style="color: orangered">班级列表</h1>
+
+
+<script src="/static/jquery-3.4.1.min.js"></script>
+   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/static/plugin/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+
+
+<div>
+    <a href="/student_manage/" class="btn btn-warning">点击此处管理学生</a>
+    <a href="/teacher/" class="btn btn-danger">点击此处管理教师</a>
+    <a onclick="show_add()"  class="btn btn-warning">添加班级</a>
+</div>
+
+<table class="table table-hover  table-bordered">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>班级名称</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in class_list %}
+        <tr>
+            <td>{{  row.id }}</td>
+            <td>{{ row.class_name }}</td>
+            <td>
+                <a href="/edit/?id={{ row.id }}">编辑</a>
+{#                <a onclick="modal_edit(this);">点击使用对话框编辑</a>#}
+{#                |#}
+{#                <a href="/delete/?id={{ row.id }}" >删除</a>#}
+                |
+                <a onclick="modal_del(this)" >删除</a>
+{#****************href="/delete/?id={{ row.id }}#}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<style>
+    .hide{
+        display:none;
+    }
+
+    .shadow{
+
+        position:fixed;
+        left:0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-color: black;
+        opacity: 0.5;
+        z-index: 999;
+
+    }
+
+
+    .add_modal{
+        position:fixed;
+        left:50%;
+        top: 50%;
+        width:300px;
+        height: 400px;
+        background-color:azure;
+        z-index: 1000;
+        margin-left:-200px;
+        margin-top: -200px;
+
+
+    }
+</style>
+
+{#<h2>创建模态框（Modal）</h2>#}
+
+
+<!-- 按钮触发模态框 -->
+<div>
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    退出系统
+</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    确定退出吗？
+                </h4>
+            </div>
+
+            <div class="modal-footer">
+                <input onclick="hidemodal()" type="button" class="btn btn-default" value="取消" >
+
+                <input type="button"  onclick="exit()" class="btn btn-primary" value="退出">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div id="shadow" class="shadow hide"></div>
+</div>
+
+
+<div>
+<div id="modal_del" class="add_modal hide">
+    <p>确定删除嘛？</p>
+    <p>
+        <input type="text" id="del_id" name="id" style="display: none"/>
+
+    </p>
+    <p>
+        <input type="button" value="我确定" onclick="del_ajaxsend()">
+        <input type="button" value="点错了" onclick="hidemodal()">
+
+    </p>
+</div>
+</div>
+
+
+
+<div id="btn_add_modal" class="add_modal hide" >
+    <p>
+    </p>
+<p>
+
+</p>
+     <p>
+     &nbsp;  <input type="text" id="class_name"/>
+  </p>
+     <input type="button" value="提交" onclick="ajaxSend();"/>
+   <input type="button" value="取消" onclick="hidemodal()"/>
+
+</div>
+
+
+{#<div id="modal_edit" class="add_modal hide" >#}
+{#     <h1>编辑对话框</h1>#}
+{#     <p>#}
+{#         <input type="text" id="edit_id" name="id" style="display: none"/>#}
+{#      <input type="text" name="title" id="edit_title"/>#}
+{#  </p>#}
+{#      <input type="button" value="提交" onclick="edit_ajaxsend();"/>#}
+{#    <input type="button" value="取消" onclick="hidemodal();"/>#}
+{##}
+{#</div>#}
+
+<script>
+
+
+    function hidemodal() {
+        location.href='/classes/'
+    }
+
+    function exit() {
+        location.href='/login/'
+
+    }
+
+function showModal() {
+     document.getElementById('shadow').classList.remove('hide');
+     console.log('去掉了shadow');
+     document.getElementById('modal').classList.remove('hide');
+     console.log('去掉了')
+ }
+
+
+{#function modal_edit(ths) {#}
+{#         document.getElementById('modal_edit').classList.remove('hide');#}
+{#     document.getElementById('shadow').classList.remove('hide');#}
+{#/*#}
+{#1.获取当前点击标签#}
+{#2.当前标签的父标签#}
+{#3.找父标签前面的两个，里面有id和class_name#}
+{#4.获取当前行班级名称，赋值到编辑对话框中#}
+{##}
+{# */#}
+{#  var row=$(ths).parent().prevAll();#}
+{#    var content=$(row[0]).text();#}
+    {#row[0].text() 班级名#}
+    {#row[1]#}
+{#    $('#edit_title').val(content);#}
+{#    var contentid=$(row[1]).text();#}
+{#    $('#edit_id').val(contentid)#}
+{#}#}
+
+
+
+function ajaxSend() {
+    $.ajax({
+        url: '/modal_add_class/',
+        type: 'POST',
+        data: {'class_name': $('#class_name').val()},
+        success: function (data) {
+            console.log(data);
+            if (data == 'ok') {
+                alert('提交成功');
+                 location.href = '/classes/';//使用location.href进行跳转
+            } else {
+               alert('班级不能为空哦！');
+            }
+        }
+    })
+}
+
+
+{#function edit_ajaxsend() {#}
+{#        var nid=$('#edit_id').val();#}
+{#    var content=$('#edit_title').val();#}
+    {#console.log(nid,content)#}
+{#    $.ajax(#}
+{#        {#}
+{#            url:'/modal_edit_class/',#}
+{#            type:'post',#}
+{#            data:{'nid':nid,'content':content},#}
+{#            success:function (arg) {#}
+{#                arg=JSON.parse(arg);#}
+{#                if(arg.status)#}
+{#                {#}
+{#                    console.log(arg);#}
+{#                    location.reload();#}
+{#                }#}
+{#                else{#}
+{#                    alert(arg.message)#}
+{##}
+{#                }#}
+{#            }#}
+{#        }#}
+{#    )#}
+{#    #}
+{#}#}
+
+function show_add() {
+         document.getElementById('btn_add_modal').classList.remove('hide');
+     document.getElementById('shadow').classList.remove('hide');
+}
+
+
+function modal_del(ths){
+         document.getElementById('modal_del').classList.remove('hide');
+     document.getElementById('shadow').classList.remove('hide');
+/*
+1.获取当前点击标签
+2.当前标签的父标签
+3.找父标签前面的两个，里面有id和class_name
+4.获取当前行班级名称，赋值到编辑对话框中
+
+ */
+  var row=$(ths).parent().prevAll();
+    {#var content=$(row[0]).text();#}
+    {#row[0].text() 班级名#}
+    {#row[1]#}
+    {#$('#del_title').val(content);#}
+    var contentid=$(row[1]).text();
+    $('#del_id').val(contentid)
+
+}
+
+function del_ajaxsend() {
+         var nid=$('#del_id').val();
+    //var content=$('#edit_title').val();
+    {#console.log(nid,content)#}
+    $.ajax(
+        {
+            url:'/modal_del_class/',
+            type:'post',
+            data:{'nid':nid,},
+            success:function (arg) {
+                arg=JSON.parse(arg);
+                if(arg.status)
+                {
+                    console.log(arg);
+                    location.reload();
+                }
+                else{
+                    alert(arg.message)
+
+                }
+            }
+        }
+    )
+
+}
+
+
+</script>

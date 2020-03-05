@@ -1,0 +1,283 @@
+<h1 style="color: orangered">学生列表</h1>
+<script src="/static/jquery-3.4.1.min.js"></script>
+   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/static/plugin/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+
+<div>
+    <a href="/student_add/" class="btn btn-info">添加学生信息</a>
+{#    //基于jQuery绑定#}
+</div>
+<table class="table-striped table-bordered table table-hover">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>学生姓名</th>
+        <th>所属班级</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in student_list %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.name }}</td>
+            <td class_id="{{ row.classid }}">{{ row.class_name }}</td>
+            <td>
+                <a class="modal_student_edit glyphicon glyphicon-pencil" ></a>
+                |
+                <a class="modal_del glyphicon glyphicon-trash"></a>
+
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div>
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    退出系统
+</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    确定退出吗？
+                </h4>
+            </div>
+
+            <div class="modal-footer">
+                <input onclick="hidemodal()" type="button" class="btn btn-default" value="取消" >
+
+                <input type="button"  onclick="exit()" class="btn btn-primary" value="退出">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div id="shadow" class="shadow hide"></div>
+</div>
+{#<div>#}
+<style>
+    .hide{
+        display:none;
+    }
+
+    .shadow{
+
+        position:fixed;
+        left:0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-color: black;
+        opacity: 0.5;
+        z-index: 999;
+
+    }
+
+
+    .add_modal{
+        position:fixed;
+        left:50%;
+        top: 50%;
+        width:300px;
+        height: 400px;
+        background-color:azure;
+        z-index: 1000;
+        margin-left:-200px;
+        margin-top: -200px;
+
+
+    }
+</style>
+
+<div id="show_shadow" class="shadow hide " >
+
+
+
+</div>
+<div id="show_del" class="add_modal hide">
+    <input id="btn_del" type="button" value="确定删除">
+{#    <input id="">#}
+    <input id="btn_del_cancel" type="button" value="点错了">
+
+
+</div>
+<div id="show_edit" class="add_modal hide" >
+    <p>    姓名:<input id="edit_name" type="text" name="name" placeholder="请输入姓名">
+        <input id="edit_student_id" type="text" hidden value="0">
+</p>
+    <p>
+        班级：<select id="edit_class_id" name="classid">
+        {% for row in class_list %}
+            <option id="edit_class" value="{{ row.id }}">
+            {{ row.class_name }}
+            </option>
+
+
+        {% endfor %}
+    </select>
+    </p>
+<p><input type="button" id="submit_edit" value="提交"></p>
+<p><input type="button" id="cancel" value="我点错了"></p>
+</div>
+<div id="show_add" class="add_modal hide" >
+    <p>    姓名:<input id="add_name" type="text" name="name" placeholder="请输入姓名">
+</p>
+    <p>
+        班级：<select id="add_class_id" name="classid">
+        {% for row in class_list %}
+            <option value="{{ row.id }}">
+            {{ row.class_name }}
+            </option>
+
+
+        {% endfor %}
+
+
+    </select>
+    </p>
+<input id="submitinfo" type="button" value="确认添加">
+<input id="cancel_1" type="button" value="我点错了">
+
+
+</div>
+
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+
+<script>
+{#页面框架加载完成，自动执行#}
+ function hidemodal() {
+        location.href='/student_manage/'
+    }
+
+    function exit() {
+        location.href='/login/'
+
+    }
+$(function () {
+
+
+    $('.modal_del').click(function () {
+
+        $('#show_shadow,#show_del').removeClass('hide');
+        var tds=$(this).parent().prevAll();
+        var student_id=$(tds[2]).text();
+        var student_name=$(tds[1]).text();
+        var class_id=$(tds[0]).attr('class_id');
+        console.log(student_id,student_name,class_id);
+         $('#edit_name').val(student_name);
+        $('#edit_class_id').val(class_id);
+        $('#edit_student_id').val(student_id)
+
+
+    });
+     $('#btn_del_cancel').click(function () {
+         location.reload()
+     });
+     $('#btn_del').click(function () {
+         $.ajax({
+
+             url:'/modal_del_student/',
+             type:'POST',
+             data: {
+                   'student_id': $('#edit_student_id').val(),
+                   'class_id': $('#edit_class_id').val(),
+                   'student_name': $('#edit_name').val(),
+               },
+             success:function () {
+                 alert('已删除');
+                 location.reload();
+             }
+
+
+         })
+
+
+
+
+     });
+
+    $('.modal_student_edit').click(function () {
+        $('#show_edit,#show_shadow').removeClass('hide');
+        var tds=$(this).parent().prevAll();
+        var student_id=$(tds[2]).text();
+        var student_name=$(tds[1]).text();
+        var class_id=$(tds[0]).attr('class_id');
+        console.log(student_id,student_name,class_id);
+        $('#edit_name').val(student_name);
+        $('#edit_class_id').val(class_id);
+        $('#edit_student_id').val(student_id)
+    });
+
+    $('#submit_edit').click(function () {
+       $.ajax(
+
+           {
+               url:'/modal_edit_student/',
+               type:'POST',
+               data: {
+                   'student_id': $('#edit_student_id').val(),
+                   'class_id': $('#edit_class_id').val(),
+                   'student_name': $('#edit_name').val(),
+               },
+               success:function () {
+                   alert('ok');
+                   location.reload()
+
+               }
+
+
+           }
+
+
+
+
+       )
+    });
+    $('#cancel').click(function () {
+        location.reload()
+        
+    });
+     $('#cancel_1').click(function () {
+        location.reload()
+
+    });
+
+    $('#add_modal').click(function () {
+        $('#show_add,#show_shadow').removeClass('hide');
+        {#return false阻止默认事件发生#}
+
+    });
+
+    $('#submitinfo').click(function () {
+        $.ajax({
+            url:'/modal_add_student/',
+            type:'POST',
+            data:{name:$('#add_name').val(),class_id:$('#add_class_id').val()},
+            success:function (arg) {
+
+                {#arg=JSON.parse(arg);#}
+                if(arg=='ok'){
+                    location.reload()
+                }else {alert('名字没写')}
+
+
+            }
+        })
+
+
+        
+    })
+
+
+
+})
+
+
+</script>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<script src="/static/jquery-3.4.1.min.js"></script>
+   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/static/plugin/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+
+<head>
+    <meta charset="UTF-8">
+    <title>选课</title>
+</head>
+<body >
+
+
+<table class="table-striped table-bordered table table-hover">
+    <thead>
+   <h1>已选课程</h1>
+    <tr>
+        <td>{{ msg.name }}  同学，欢迎！</td>
+        <th>课程名称</th>
+        <th>上课时间</th>
+        <th>任课教师</th>
+        <th>学分</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in course_list %}
+        <tr>
+        <td></td>
+            <td>{{ row.course_name }}</td>
+            <td>{{ row.time }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.credit }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table class="table-striped table-bordered table table-hover">
+    <h1>未选课程</h1>
+        <tbody>
+        <tr>
+        <th></th>
+        <th>课程名称</th>
+        <th>上课时间</th>
+        <th>任课教师</th>
+        <th>学分</th>
+        </tr>
+    {% for row in not_selected_course_list %}
+
+
+        <tr>
+        <td></td>
+
+            <td>{{ row.course_name }}</td>
+            <td>{{ row.time }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.credit }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+
+
+</table>
+
+
+
+</body>
+
+
+
+
+
+</html>

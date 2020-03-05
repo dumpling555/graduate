@@ -1,0 +1,161 @@
+内容回顾：
+template里面放模板
+静态文件放在static里面
+  1.创建django程序
+2.新url方式
+|--添加
+|--编辑
+|--删除
+     3.数据库的几种用法 Dangdang->class,class是一张表
+1)增
+            Insert into class（class_name）value=%s
+2)删
+            Delete from class where id=%s
+3)改
+            Update class set class_name=%s where id=%s
+4)联表操作
+            select student.id,student.name,class.class_name from student left join class on student.id=class.id
+5)创建数据游标
+            Cursor=conn.cursor(cursor=pymsql.Cursor.Dictcursor)
+
+
+
+今日内容：
+1.学生管理
+ 在views中，添加判断输入内容是否为空的if—else语句（之后的form表单验证）
+2.模态对话框
+3.ajax
+
+本周作业
+多对多
+Form表单的特性：提交之后刷新页面，刷新成什么样，根据后台指定
+由于这个特性 ，使用对话框的时候，不能用form表单提交，因为要保留对话框的状态
+这就要使用ajax，页面不刷新的状态下偷偷向后台发数据
+对于ajax，不能使用redirect进行跳转，要使用js文件
+Location.href=’http://www.baidu.com
+
+Ajax:
+Jquery
+ $.ajax(后面接一个字典
+{url:'要提交的地址'
+Type：post/get:提交方式
+Data：{'k1':'v1'}提交的数据
+success：function（data）{//当服务端处理完毕后，自动执行的回调函数}
+}
+)
+
+
+其他
+1.模板语言if条件语句
+2.form表单提交，页面会刷新
+3.ajax提交，页面不刷新
+4.js实现页面跳转：location.href='要跳转的地址'
+5. document.getElementById('modal').classList.add('hide')隐藏
+    document.getElementById('modal').classList.remove('hide')显现
+
+
+模态对话框：ajax
+    少量数据 少量输入框
+    登录几乎适用对话框，不过两种都能用
+新url方式：对于大量的数据和操作适用
+
+
+下午作业：班级的ajax删除
+班级的ajax编辑
+
+本周作业
+一对多 新url，对话框***
+多对多 新url，对话框
+
+json.parse(字符串）=>对象
+json.stringfy(对象）=>字符串
+
+
+内容回顾
+1.web框架本质
+浏览器（socket客户端）
+GET:请求头
+http1.1/index?p=123,带参数
+请求体（无内容）
+
+POST：
+  请求头
+   http1.1/index?p=123,带参数
+     2.http：//www.baidu.com:80/index/
+
+
+
+  服务器(socket服务端)
+  1.启动并监听ip和端口，等待用户连接
+  2.接收请求进行处理
+    普通返回
+            响应头
+            ...
+
+            响应体
+            ...
+    重定向返回
+            响应头
+            LOCATION：'http://www.baidu.com'
+
+
+  Django 框架
+        a. 创建project
+        django-admin startproject mysite
+
+        b.配置
+            模板
+            静态文件
+            csrf
+        c.路由关系
+            url——>函数
+            url——>函数
+            url——>函数
+            url——>函数
+            url——>函数
+
+        d.视图函数
+            def xxx(request)
+                request.method
+                request.GET
+                request.POST
+                sql语句
+                return Httpresponse('xxx')
+                return redirect('URL')
+                return render(request,'xxx.html模板文件',参数)
+
+        e.模板渲染
+        {{k1}} 单值
+
+        {{k2.0}}
+
+        {%for i in result%}
+
+                {{i}}
+
+        {%endfor%}
+
+
+        {%if 1=2%}
+
+        {%endif%}
+
+7.18
+
+对话框
+    单表
+        添加
+        编辑
+        删除
+    PS
+        a.js阻止默认事件的发生
+        b.location.reload/href=''
+        c.HttpRespoonse(json.dumps(xxx))
+        d.JSON.parse
+        e.jQuery阻止默认事件的发生  return false
+
+bootstrap 响应式 @media(768px)低于768像素执行某功能
+
+
+
+

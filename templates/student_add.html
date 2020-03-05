@@ -1,0 +1,24 @@
+<body background="2.jpg">
+
+<h1 style="color:orangered">添加学生信息</h1>
+
+<form method="post" action="/student_add/">
+{#如果不写action，就提交到当前url，在这里写不写都一样#}
+
+    <p>学生姓名：<input type="text" name="name" /></p>
+{#    <p>学生姓名：<input type="text" name="name"></p>#}
+{#    这里用一个下拉框，只限定在这几个班级中#}
+    <p>学生班级
+       <select name="class_id">
+{#       以id为名接收数据#}
+           {% for row in class_list %}
+{#  就好像1班是文强班，22班是奥赛班，提交到后台，直接提交班级号，而不提交班级名称，这是由数据库的结构决定的#}
+               <option value="{{ row.id }}">{{ row.class_name }}</option>
+
+           {% endfor %}
+       </select>
+    </p>
+    <input type="submit" value="提交">
+
+</form>
+</body>

@@ -1,0 +1,17 @@
+
+
+<h1 style="color:orangered">添加教师信息</h1>
+
+<form method="post" >
+
+    <p>教师姓名：<input type="text" name="name" /></p>
+    <p>任教班级
+       <select multiple name="class_id" >
+           {% for item in class_list %}
+               <option value="{{ item.id }}">{{ item.class_name }}</option>
+           {% endfor %}
+       </select>
+    </p>
+    <input type="submit" value="提交">
+
+</form>
