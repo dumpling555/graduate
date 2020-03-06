@@ -396,6 +396,7 @@ def layout(request):
 
 
 def select_course(request):
+
     sql="""
     SELECT
 	course.course_name,
@@ -460,13 +461,39 @@ WHERE
                     """
         for item in ans:
             not_selected_course=obj.getone(sql_not_selected,[item,])
+            not_selected_course['course_number']=item
             not_selected_course_list.append(not_selected_course)
+        print(not_selected_course_list)
 
 
 
         return render(request,'SelectCourse.html',{'course_list':course_list,'not_selected_course_list':not_selected_course_list,'msg':user})
+    else:pass
+
+def add_my_course(request):
+    global course_number
+    sql="""
+    
+    INSERT INTO `course_student`(`course_number`, `student`) VALUES (%s, %s)
+    
+    """
+
+    if request.method=='POST':
+        obj = sqlhelper.SqlHelper()
+        obj.create(sql,[course_number,username])
+
+        print('==========================',course_number)
+        return redirect('/select_course/')
+
     else:
-        pass
+
+        course_number=request.GET.get('nid')
+        # print(course_number)
+        return  render(request,'add_my_course.html',{'course_number':course_number})
+
+def del_my_course(request):
+    pass
+
 
 
 
@@ -475,7 +502,7 @@ def login(request):
     if request.method == 'GET':
         return render(request, 'login.html')
     else:
-        # global username
+        global username
         username = request.POST.get('username')
         password = request.POST.get('password')
         try:

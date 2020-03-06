@@ -38,5 +38,7 @@ urlpatterns = [
     path('layout/',views.layout),
     path('login/', views.login),
     path('select_course/',views.select_course),
+    path('del_my_course/',views.del_my_course),
+    path('add_my_course/',views.add_my_course)
 
 ]

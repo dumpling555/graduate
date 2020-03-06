@@ -21,6 +21,7 @@
         <th>上课时间</th>
         <th>任课教师</th>
         <th>学分</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
             <td>{{ row.time }}</td>
             <td>{{ row.name }}</td>
             <td>{{ row.credit }}</td>
+         <td><a >退课</a></td>
         </tr>
     {% endfor %}
     </tbody>
@@ -45,31 +47,54 @@
         <th>上课时间</th>
         <th>任课教师</th>
         <th>学分</th>
+            <th>操作</th>
         </tr>
     {% for row in not_selected_course_list %}
-
-
         <tr>
         <td></td>
-
             <td>{{ row.course_name }}</td>
             <td>{{ row.time }}</td>
             <td>{{ row.name }}</td>
             <td>{{ row.credit }}</td>
+         <td><a  href="/add_my_course/?nid={{ row.course_number }}">选课</a></td>
         </tr>
     {% endfor %}
     </tbody>
 
-
-
 </table>
-
 
 
 </body>
 
-
-
-
-
 </html>
+{#<script>#}
+{# function add_my_course() {#}
+{#         var nid=$('#nid').val();#}
+{#    //var content=$('#edit_title').val();#}
+    {#console.log(nid,content)#}
+{#    $.ajax(#}
+{#        {#}
+{#            url:'/add_my_course/',#}
+{#            type:'post',#}
+{#            data:{'nid':nid,},#}
+{#            success:function (arg) {#}
+{#                arg=JSON.parse(arg);#}
+{#                if(arg.status)#}
+{#                {#}
+{#                    console.log(arg);#}
+{#                    location.reload();#}
+{#                }#}
+{#                else{#}
+{#                    alert(arg.message)#}
+{##}
+{#                }#}
+{#            }#}
+{#        }#}
+{#    )#}
+{##}
+{#}#}
+{##}
+{##}
+{##}
+{##}
+{#</script>#}
