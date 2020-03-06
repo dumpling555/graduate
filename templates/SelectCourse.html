@@ -32,7 +32,7 @@
             <td>{{ row.time }}</td>
             <td>{{ row.name }}</td>
             <td>{{ row.credit }}</td>
-         <td><a >退课</a></td>
+         <td><a href="/del_my_course/?cid={{ row.course_number }}">退课</a></td>
         </tr>
     {% endfor %}
     </tbody>

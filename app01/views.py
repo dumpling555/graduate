@@ -402,7 +402,8 @@ def select_course(request):
 	course.course_name,
 	course.time,
 	teacher.name,
-	course.credit 
+	course.credit,
+	course.course_number
 FROM
 	course,
 	teacher,
@@ -424,7 +425,9 @@ WHERE
     obj = sqlhelper.SqlHelper()
     if request.method == 'GET':
         course_list = obj.getall(sql, [username,])
-        print(course_list)
+
+        print('course_list',course_list)
+
         user=obj.getone('select name from student where id = %s',[username,])
         student_selected_course=obj.getall(sql_student,[username,])
         all_course=obj.getall(sql_course,[])
@@ -470,6 +473,7 @@ WHERE
         return render(request,'SelectCourse.html',{'course_list':course_list,'not_selected_course_list':not_selected_course_list,'msg':user})
     else:pass
 
+
 def add_my_course(request):
     global course_number
     sql="""
@@ -492,13 +496,20 @@ def add_my_course(request):
         return  render(request,'add_my_course.html',{'course_number':course_number})
 
 def del_my_course(request):
-    pass
-
-
-
+    global del_course_number
+    sql="""
+    DELETE FROM `dangdang`.`course_student` WHERE `course_number` = %s AND `student` = %s LIMIT 1
+    """
+    if request.method=="GET":
+        del_course_number=request.GET.get('cid')
+        return render(request,'del_my_course.html',{'del_course_number':del_course_number})
+    else:
+        obj=sqlhelper.SqlHelper()
+        obj.modify(sql,[del_course_number,username])
+        return redirect('/select_course/')
 
 def login(request):
-    global  username
+
     if request.method == 'GET':
         return render(request, 'login.html')
     else:
