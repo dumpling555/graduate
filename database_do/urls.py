@@ -18,6 +18,7 @@ from django.urls import path
 from app01 import  views
 
 urlpatterns = [
+    path('',views.login),#默认跳转到登录页面
     path('admin/', admin.site.urls),
     path('classes/',views.classes),
     path('add/',views.add),

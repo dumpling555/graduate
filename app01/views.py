@@ -424,7 +424,8 @@ WHERE
 
     obj = sqlhelper.SqlHelper()
     if request.method == 'GET':
-        course_list = obj.getall(sql, [username,])
+        #这里有个问题，就是全局变量username会失灵，改成g_username就没事了，纯bug
+        course_list = obj.getall(sql, [g_username,])
 
         print('course_list',course_list)
 
@@ -509,6 +510,7 @@ def del_my_course(request):
         return redirect('/select_course/')
 
 def login(request):
+    global g_username
 
     if request.method == 'GET':
         return render(request, 'login.html')
@@ -516,10 +518,11 @@ def login(request):
         global username
         username = request.POST.get('username')
         password = request.POST.get('password')
+        g_username=username
         try:
             if username == 'admin' and password == 'admin':
                 obj = redirect('/layout/')
-                obj.set_signed_cookie('ticket', '666', salt='qst')  # 设置签名，加盐
+                # obj.set_signed_cookie('ticket', '666', salt='qst')  # 设置签名，加盐
                 """
                 max_age: 存在10s，expire:具体的时间如2019/7/22/22:20:35
                 path:cookie的写入地址
