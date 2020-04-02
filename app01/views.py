@@ -394,7 +394,7 @@ def layout(request):
     obj = render(request, 'layout.html')
     return obj
 
-
+@auth
 def select_course(request):
 
     sql="""
@@ -522,14 +522,18 @@ def login(request):
         try:
             if username == 'admin' and password == 'admin':
                 obj = redirect('/layout/')
-                # obj.set_signed_cookie('ticket', '666', salt='qst')  # 设置签名，加盐
+                obj.set_signed_cookie('ticket', '666', salt='qst')  # 设置签名，加盐
                 """
                 max_age: 存在10s，expire:具体的时间如2019/7/22/22:20:35
                 path:cookie的写入地址
                 """
                 return obj
-            elif sqlhelper.SqlHelper().getone('select password from student where id=%s', [username, ])[
-                'password'] == password:
-                return redirect('/select_course/')
+            elif  sqlhelper.SqlHelper().getone('select password from student where id=%s', [username, ])['password']!=password:
+                return redirect('/login/')
+            elif sqlhelper.SqlHelper().getone('select password from student where id=%s', [username, ])['password'] == password:
+                obj=redirect('/select_course/')
+                obj.set_signed_cookie('ticket', 'passport', salt='qst')
+                return obj
         except Exception as e:
-            return render(request, 'login.html', {'msg': '用户名或密码错误'})
+            print(e)
+            return redirect('/login/')
