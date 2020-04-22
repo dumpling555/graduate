@@ -119,6 +119,7 @@ def student_manage(request):
     cursor.close()
     conn.close()
     class_list = sqlhelper.getall('select id,class_name from class ', [])
+    print(student_list)
     return render(request, 'student_manage.html', {'student_list': student_list, 'class_list': class_list})
 
 
@@ -518,10 +519,14 @@ def login(request):
         global username
         username = request.POST.get('username')
         password = request.POST.get('password')
+        login_user=request.POST.get('type')#检查登录的人的身份
+        print('=====================',login_user)
         g_username=username
         try:
-            if username == 'admin' and password == 'admin':
-                obj = redirect('/layout/')
+            if login_user=='admin':
+
+                if sqlhelper.SqlHelper().getone('select password from admin where `name`=%s', [username, ])['password']==password:
+                    obj = redirect('/layout/')
                 obj.set_signed_cookie('ticket', '666', salt='qst')  # 设置签名，加盐
                 """
                 max_age: 存在10s，expire:具体的时间如2019/7/22/22:20:35
