@@ -312,7 +312,7 @@ LEFT JOIN class on class.id=teacher_class.class_id
     
     """
     teacher_list = sqlhelper.getall(sql, [])
-    # print(teacher_list)
+    print(teacher_list)
     result = {}
     for row in teacher_list:
 
@@ -324,6 +324,24 @@ LEFT JOIN class on class.id=teacher_class.class_id
     # print(result)
     return render(request, 'teacher.html', {'teacher_list': result.values()})
 
+@auth
+def del_teacher(request):
+    if request.method=='POST':
+        del_teacher_id=request.POST.get('nid')
+        related_class=request.POST.get
+        print('===================',del_teacher_id)
+        sql_teacher="""
+        delete from teacher where id=%s;
+        """
+        sql_teacher2class="""
+        delete from teacher_class where teacher_id=%s
+        """
+        obj = sqlhelper.SqlHelper()
+        obj.modify(sql_teacher, [del_teacher_id])
+        obj.modify(sql_teacher2class,[del_teacher_id])
+        return redirect('/teacher/')
+    else:
+        return redirect('/teacher/')
 
 @auth
 def add_teacher(request):

@@ -193,7 +193,7 @@ function ajaxSend() {
             console.log(data);
             if (data === 'ok') {
                 alert('提交成功');
-                 location.href = '/classes/';//使用location.href进行跳转
+                 location.href = '/teacher/';//使用location.href进行跳转
             } else {
                alert('班级不能为空空哦！');
             }
@@ -242,7 +242,7 @@ function modal_del(ths){
     {#row[0].text() 班级名#}
     {#row[1]#}
     {#$('#del_title').val(content);#}
-    var contentid=$(row[1]).text();
+    var contentid=$(row[2]).text();
     $('#del_id').val(contentid)
 
 }
@@ -253,7 +253,7 @@ function del_ajaxsend() {
     {#console.log(nid,content)#}
     $.ajax(
         {
-            url:'/modal_del_class/',
+            url:'/del_teacher/',
             type:'post',
             data:{'nid':nid,},
             success:function (arg) {
@@ -270,7 +270,7 @@ function del_ajaxsend() {
             }
         }
     )
-
+    location.reload()
 }
 
 
